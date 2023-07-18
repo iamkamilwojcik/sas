@@ -1,3 +1,4 @@
+Upload
 from azure.storage.blob import BlobServiceClient
 
 source_file_path = "file_path"
@@ -13,3 +14,21 @@ sas_url = f"{blob_service_client.url}/{container_name}/{blob_name}?{sas_token}"
 blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
 with open(source_file_path, "rb") as f:
     blob_client.upload_blob(f, overwrite=True)
+
+Download
+from azure.storage.blob import BlobServiceClient
+
+connection_string = ""
+container_name = ""
+blob_name = "test.txt"
+sas_token = ""
+destination_file_path = "file_path"
+
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+sas_url = f"{blob_service_client.url}/{container_name}/{blob_name}?{sas_token}"
+
+with open(destination_file_path, "wb") as f:
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+    f.write(blob_client.download_blob().readall())
+
